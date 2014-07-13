@@ -1,4 +1,1 @@
-sinatra-skeleton
-================
-
-sinatra skeleton
+### sinatra skeleton
