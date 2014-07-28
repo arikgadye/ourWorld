@@ -6,17 +6,19 @@
 }
 
 #map-canvas{
-	height: 800px;
+	height: 720px;
 	width: 100%;
-	border: 2px solid blue;
+	border: 4px solid #bdc3c7;
 }
 h1 {
+	font-size: 50px;
 	font-family: 'Architects Daughter', cursive;
+	color: #2c3e50;
 }
-h2 {
-	color: red;
+h3{
+	color: #2c3e50;
 	font-family: 'Architects Daughter', cursive;
 }
 body {
-	background: lightblue
+	background: #3498db;
 }
