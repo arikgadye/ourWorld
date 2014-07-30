@@ -17,7 +17,7 @@ gem 'activerecord'
 
 #face recognition
 
-
+gem 'httparty'
 gem 'rake'
 
 gem 'shotgun'
