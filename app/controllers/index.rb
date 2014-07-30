@@ -3,7 +3,8 @@ get '/' do
 end
 
 get '/times' do 
-	state = params[:state].strip
+	state = params[:state].strip.gsub(/\s+/, "")
+	p state
 	response = HTTParty.get("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=#{state}&api-key=3e12820f08431a42bc872573ba7b5f72:13:69616315")
 	parsed_data = JSON.parse(response.body)["response"]["docs"][1]
 	if Article.find_by_headline(parsed_data["headline"]["main"])
