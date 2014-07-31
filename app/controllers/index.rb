@@ -58,7 +58,12 @@ end
 get '/times' do 
   @articles = []
   state = params[:state].strip.gsub(/\s+/, "")
+  # I need to but an exception handler around this call.
+  begin
   response = HTTParty.get("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=#{state}&api-key=3e12820f08431a42bc872573ba7b5f72:13:69616315")
+  rescue StandardError => e 
+    raise StandardError
+end
   response["response"]["docs"].each do |article|
     if Article.find_by_headline(article["headline"]["main"])
       @articles << Article.find_by_headline(article["headline"]["main"])
@@ -69,47 +74,13 @@ get '/times' do
   temp = @articles
   article = temp.delete(temp.sample)
   {
+    id: article.id,
     state:    state,
     headline: article.headline,
     url:      article.url,
     snippet:  article.snippet
     }.to_json
   end
-
-
-  # hash = {}
-  # @articles.each do |article|
-  #   new_hash = {state: state, headline: article.headline, url: article.url, snippet: article.snippet}
-  #   hash.merge(new_hash)
-  # end
-
-
-post '/users/signin' do 
-  # @user = User.find_by_username(params[:username])
-  # if @user && @user.password == params[:password]
-  #   session[:user_id] = @user.id
-  #   p session[:user_id]
-  #   redirect to('/')
-  # else
-  #   flash[:errors] = "meh"  
-  #   redirect to ('/users/signin')
-  # end
-end
-
-get '/users/new' do 
-  erb :new
-end
-post '/users/new' do 
-  @user = User.new(username: params[:username])
-  @user.password = params[:password]
-  @user.save!
-  if @user.errors.any?
-    redirect ('/users/new')
-    flash[:errors] = @user.errors.full_messages
-  end
-  session[:user_id] = @user.id
-  redirect to('/')
-end 
 
 post '/signout' do 
   session[:user_id] = nil

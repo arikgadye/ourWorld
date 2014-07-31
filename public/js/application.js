@@ -1,5 +1,5 @@
 $(document).ready(function() {	
-  function initialize() {
+  function initialize() {  
     var data;
     var geocoder = new google.maps.Geocoder();
     var mapOptions = {
@@ -31,25 +31,45 @@ $(document).ready(function() {
     });
   }
 
-function getData(data) {
-  $('#ball').show();
-  var ajax = $.ajax({
-    url: '/times',
-    type: 'GET',
-    data: {state: data}
-  });
-  ajax.done(displayData);
-}
+  function getData(data) {
+    $('#ball').show();
+    var ajax = $.ajax({
+      url: '/times',
+      type: 'GET',
+      data: {state: data},
+      statusCode: {
+        500: function() {
+          $('#ball').hide()
+          $('#feed').append('<div id="error">No news here... try clicking somewhere else!</div>').css('color','white')
+          setTimeout(function() {
+            $('#feed #error').hide();
+          }, 5000);
+        }
+      }
+    });
+    ajax.done(displayData);
+  }
 
-function displayData(data) {
-// console.log(data) 
-  var parsed = JSON.parse(data);
-  console.log(parsed);
-  var feed = $('#feed');
-  $('#ball').hide();
-  feed.append('<h5>' + parsed.state + '</h5>');
-  feed.append('<div> <a href="' + parsed.url + '" target=_blank>' + parsed.headline + '</a></div>');
-  feed.append('<hr>')
-}
-google.maps.event.addDomListener(window, 'load', initialize); 
+  function displayData(data) {
+    console.log(data) 
+
+    var parsed = JSON.parse(data);
+    console.log(parsed);
+    var feed = $('#feed');
+    var status = false
+    $('#ball').hide();
+    feed.append('<h5>' + parsed.state + '</h5>');
+    feed.append('<div id=' + parsed.id + '><a href="' + parsed.url + '" target=_blank>' + parsed.headline + '</a><br><i class="fa fa-star" id="favorite" style="color:white;"></i></div>');
+    feed.append('<hr>')
+    $('#' + parsed.id + ' #favorite').on('click', function() {
+      if (status === false) {
+        $(this).css('color', 'yellow')
+        status = true
+      } else {
+        $(this).css('color', 'white')
+        status = false
+      }
+    });
+  }
+  google.maps.event.addDomListener(window, 'load', initialize); 
 });
