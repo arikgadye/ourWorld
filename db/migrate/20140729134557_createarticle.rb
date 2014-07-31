@@ -1,8 +1,8 @@
 class Createarticle < ActiveRecord::Migration
   def change
   	create_table :articles do |t|
-  		t.string :headline
-  		t.string :snippet
+  		t.text :headline
+  		t.text :snippet
   		t.string :url
 
   		t.timestamps

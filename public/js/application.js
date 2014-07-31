@@ -14,9 +14,16 @@ $(document).ready(function() {
       var longitude = e.latLng.lng();
       var latlng = new google.maps.LatLng(latitude, longitude)
       geocoder.geocode({'latLng': latlng}, function(results, status) {
+        // console.log(results)
         if (status == google.maps.GeocoderStatus.OK) {
-          if (results[1]) {
-            data = results[1].address_components[2].long_name
+          if (results[4]) {
+            if (results[4].formatted_address.split(',')[0] === 'United States') {
+              data = results[3].formatted_address.split(',')[0]
+            } else {
+              data = results[4].formatted_address.split(',')[0]
+            }
+            console.log(data)
+            // console.log(results[4].formatted_address.split(','))
             getData(data);
           }
         }
@@ -34,12 +41,15 @@ function getData(data) {
   ajax.done(displayData);
 }
 
-function displayData(data) { 
+function displayData(data) {
+// console.log(data) 
   var parsed = JSON.parse(data);
   console.log(parsed);
   var feed = $('#feed');
   $('#ball').hide();
-  feed.append('<div> <a href="' + parsed.url + '">' + parsed.headline + '</a></div>');
+  feed.append('<h5>' + parsed.state + '</h5>');
+  feed.append('<div> <a href="' + parsed.url + '" target=_blank>' + parsed.headline + '</a></div>');
+  feed.append('<hr>')
 }
 google.maps.event.addDomListener(window, 'load', initialize); 
 });

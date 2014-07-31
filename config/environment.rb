@@ -6,19 +6,28 @@ ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../../Gemfile', __FILE__)
 require 'bundler/setup' if File.exists?(ENV['BUNDLE_GEMFILE'])
 
 # Require gems we care about
+require 'pry'
+require 'oauth2'
+require 'omniauth-oauth2'
+require 'omniauth-google-oauth2'
 require 'rubygems'
-
+require 'dotenv'
+Dotenv.load
 require 'uri'
 require 'pathname'
-
+require 'sinatra/flash'
 require 'pg'
 require 'active_record'
 require 'logger'
-
+require 'bcrypt'
 require 'httparty'
 require 'sinatra'
 require "sinatra/reloader" if development?
-
+require 'rubygems'
+require 'google/api_client'
+require 'google/api_client/client_secrets'
+require 'google/api_client/auth/file_storage'
+require 'logger'
 
 
 require 'erb'

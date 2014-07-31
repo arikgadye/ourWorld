@@ -1,14 +1,33 @@
+<% if !signed_in? %>	
+<center><div id='flash'><%= flash[:goodbye] %></div></center>
+<div id='signin'>
+	<ul>
+		<li><a href='/redirect_auth_url' class='btn btn-success'>Sign In With Google</a></li>
+	</ul>
+</div>
+<% else %>
+<center><div id='flash'><%= flash[:welcome] %></div></center>
+<div id='signout'>
+	<ul>
+		<form action='/signout' method='post'>
+			<input type='submit' class='btn btn-success' value='Signout'></input>
+		</form>
+	</ul>
+</div>
+<% end %>
 <div class='container'>
 	<h1><b>Envo</b></h1>
-	<h3>Click on a state to get the latest environmental news.</h3>
+	<h3>Click on a state to get the latest news.</h3>
 	<div id='map-canvas'></div>
-	<div id='feed'>
-	<div id='ball'>
-		<div class="ball">
-			Loading...
+	<div id='feed-container'>
+		<div id='feed'>
+			<div id='ball'>
+				<div class="heartbeat">
+					Loading...
+				</div>
+			</div>
+			<h4>News</h4>
 		</div>
-	</div>
-		<h4>News</h4>
 	</div>
 </div>
 

@@ -1,5 +1,0 @@
-class SodaModel
-
-	def 
-
-end
